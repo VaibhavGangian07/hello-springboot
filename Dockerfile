@@ -1,4 +1,4 @@
-# Use official Java 17 image (Temurin)
+# Use Java 17 image
 FROM eclipse-temurin:17-jdk
 
 # Set working directory
@@ -11,10 +11,11 @@ COPY src ./src
 # Install Maven and build the project
 RUN apt-get update && apt-get install -y maven && mvn clean package
 
-# Copy the built jar
-COPY target/*.jar app.jar
+# The jar will be in target/ after build
+# Find it and rename to app.jar
+RUN cp target/*.jar app.jar
 
-# Expose port (Render assigns dynamic port)
+# Expose port (Render uses $PORT)
 ENV PORT 8080
 EXPOSE $PORT
 
